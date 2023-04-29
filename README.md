@@ -51,7 +51,7 @@ type Cells = Array<Array<Cell>>;
 
 ##### Styling
 
-You can styling it by using the classes below:
+You can style it by using the following classes:
 
 ```css
  spreadsheet
