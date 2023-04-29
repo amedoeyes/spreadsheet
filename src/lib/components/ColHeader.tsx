@@ -1,8 +1,7 @@
-import { Header } from "../types";
 import CellHeader from "./CellHeader";
 
 type ColHeaderProps = {
-	colHeader?: Header;
+	colHeader?: Array<string | number>;
 	rowIndex: number;
 };
 

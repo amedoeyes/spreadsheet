@@ -1,8 +1,8 @@
-import { Cells, Header } from "../types";
+import { Cells } from "../index";
 import CellHeader from "./CellHeader";
 
 type RowHeaderProps = {
-	rowHeader?: Header;
+	rowHeader?: Array<string | number>;
 	cells: Cells;
 };
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Spreadsheet from "./lib";
-import { Cells } from "./lib/types";
+import { Cells } from "./lib/index";
 
 export default function App() {
 	const [cells, setCells] = useState<Cells>([
@@ -23,13 +23,13 @@ export default function App() {
 			{ value: "" },
 		],
 		[
+			{ value: "this", locked: true },
+			{ value: "is", locked: true },
+			{ value: "a", locked: true },
 			{ value: "locked", locked: true },
-			{ value: "locked", locked: true },
-			{ value: "locked", locked: true },
-			{ value: "locked", locked: true },
-			{ value: "locked", locked: true },
-			{ value: "locked", locked: true },
-			{ value: "locked", locked: true },
+			{ value: "cell", locked: true },
+			{ value: "", locked: true },
+			{ value: "", locked: true },
 		],
 		[
 			{ value: "" },

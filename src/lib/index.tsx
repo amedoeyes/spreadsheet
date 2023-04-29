@@ -1,15 +1,30 @@
 import RowHeader from "./components/RowHeader";
 import Row from "./components/Row";
 import ColHeader from "./components/ColHeader";
-import Col from "./components/Col";
 import "./index.css";
-import { Cells, Header } from "./types";
+import CellInput from "./components/CellInput";
 
-type Props = {
+export type Cell = {
+	value: number | string;
+	locked?: boolean;
+	inputMode?:
+		| "search"
+		| "text"
+		| "none"
+		| "tel"
+		| "url"
+		| "email"
+		| "numeric"
+		| "decimal";
+};
+
+export type Cells = Array<Array<Cell>>;
+
+type SpreadsheetProps = {
 	cells: Cells;
-	rowHeader?: Header;
-	colHeader?: Header;
 	onChange: (cells: Cells) => void;
+	rowHeader?: Array<string | number>;
+	colHeader?: Array<string | number>;
 };
 
 export default function Spreadsheet({
@@ -17,8 +32,17 @@ export default function Spreadsheet({
 	rowHeader,
 	colHeader,
 	onChange,
-}: Props) {
+}: SpreadsheetProps) {
 	let tabIndex = 1;
+
+	const handleChange = (rowIndex: number, colIndex: number) => {
+		return (e: React.ChangeEvent<HTMLInputElement>) => {
+			const updatedCells = structuredClone(cells);
+
+			updatedCells[rowIndex][colIndex].value = e.target.value;
+			onChange(updatedCells);
+		};
+	};
 
 	return (
 		<table className="spreadsheet">
@@ -27,15 +51,12 @@ export default function Spreadsheet({
 				{cells.map((row, rowIndex) => (
 					<Row key={rowIndex}>
 						<ColHeader rowIndex={rowIndex} colHeader={colHeader} />
-						{row.map((col, colIndex) => (
-							<Col
-								key={colIndex}
-								col={col}
-								rowIndex={rowIndex}
-								colIndex={colIndex}
-								cells={cells}
-								tabIndex={col.locked ? -1 : tabIndex++}
-								onChange={onChange}
+						{row.map((cell, cellIndex) => (
+							<CellInput
+								key={cellIndex}
+								cell={cell}
+								tabIndex={cell.locked ? -1 : tabIndex++}
+								onChange={handleChange(rowIndex, cellIndex)}
 							/>
 						))}
 					</Row>

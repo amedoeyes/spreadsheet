@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 export default defineConfig({
 	plugins: [
@@ -8,15 +9,15 @@ export default defineConfig({
 		dts({
 			rollupTypes: true,
 			include: ["src/lib/"],
-			outputDir: "dist",
-			copyDtsFiles: true,
 		}),
+		cssInjectedByJsPlugin(),
 	],
 	build: {
 		lib: {
 			entry: "src/lib/index.tsx",
 			name: "Spreadsheet",
-			fileName: (format) => `index.${format}.js`,
+			formats: ["es"],
+			fileName: () => "index.js",
 		},
 		rollupOptions: {
 			external: ["react", "react-dom"],
