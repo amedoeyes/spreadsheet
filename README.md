@@ -17,19 +17,19 @@ import Spreadsheet, { Cells } from "@amedoeyes/spreadsheet";
 import { useState } from "react";
 
 export default function App() {
-	const [data, setData] = useState<Cells>([
+	const [cells, setCells] = useState<Cells>([
 		[{ value: "" }, { value: "" }, { value: "" }],
 		[{ value: "" }, { value: "" }, { value: "" }],
 		[{ value: "" }, { value: "" }, { value: "" }],
 	]);
 
-	const handleChange = (data: Cells) => setData(data);
+	const handleChange = (cells: Cells) => setCells(cells);
 
-	return <Spreadsheet cells={data} onChange={handleChange} />;
+	return <Spreadsheet cells={cells} onChange={handleChange} />;
 }
 ```
 
-##### Types
+#### Types
 
 ```ts
 type Cell = {
@@ -49,12 +49,13 @@ type Cell = {
 type Cells = Array<Array<Cell>>;
 ```
 
-##### Styling
+#### Styling
 
 You can style it by using the following classes:
 
 ```css
  spreadsheet
+ spreadsheet--dark
  spreadsheet__body
  spreadsheet__cell
  spreadsheet__cell-header

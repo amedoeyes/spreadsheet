@@ -1,8 +1,9 @@
 import RowHeader from "./components/RowHeader";
-import Row from "./components/Row";
 import ColHeader from "./components/ColHeader";
 import "./index.css";
 import CellInput from "./components/CellInput";
+import { produce } from "immer";
+import { useState } from "react";
 
 export type Cell = {
 	value: number | string;
@@ -22,9 +23,10 @@ export type Cells = Array<Array<Cell>>;
 
 type SpreadsheetProps = {
 	cells: Cells;
-	onChange: (cells: Cells) => void;
+	onChange?: (cells: Cells) => void;
 	rowHeader?: Array<string | number>;
 	colHeader?: Array<string | number>;
+	darkMode?: boolean;
 };
 
 export default function Spreadsheet({
@@ -32,24 +34,30 @@ export default function Spreadsheet({
 	rowHeader,
 	colHeader,
 	onChange,
+	darkMode = false,
 }: SpreadsheetProps) {
 	let tabIndex = 1;
+	const [localCells, setLocalCells] = useState<Cells>(cells);
 
 	const handleChange = (rowIndex: number, colIndex: number) => {
 		return (e: React.ChangeEvent<HTMLInputElement>) => {
-			const updatedCells = structuredClone(cells);
+			const updatedCells = produce(localCells, (draft) => {
+				draft[rowIndex][colIndex].value = e.target.value;
+			});
 
-			updatedCells[rowIndex][colIndex].value = e.target.value;
-			onChange(updatedCells);
+			setLocalCells(updatedCells);
+			if (onChange) onChange(updatedCells);
 		};
 	};
 
 	return (
-		<table className="spreadsheet">
+		<table
+			className={"spreadsheet" + (darkMode ? " spreadsheet--dark" : "")}
+		>
 			<tbody className="spreadsheet__body">
-				<RowHeader rowHeader={rowHeader} cells={cells} />
-				{cells.map((row, rowIndex) => (
-					<Row key={rowIndex}>
+				<RowHeader rowHeader={rowHeader} cells={localCells} />
+				{localCells.map((row, rowIndex) => (
+					<tr className="spreadsheet__row" key={rowIndex}>
 						<ColHeader rowIndex={rowIndex} colHeader={colHeader} />
 						{row.map((cell, cellIndex) => (
 							<CellInput
@@ -59,7 +67,7 @@ export default function Spreadsheet({
 								onChange={handleChange(rowIndex, cellIndex)}
 							/>
 						))}
-					</Row>
+					</tr>
 				))}
 			</tbody>
 		</table>

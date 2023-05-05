@@ -1,29 +1,44 @@
 .spreadsheet {
+	--primary-100: #ffffff;
+	--primary-200: #efefef;
+	--primary-300: #dfdfdf;
+	--secondary-100: #000000;
+	--secondary-200: #101010;
+	--secondary-300: #202020;
+
 	width: max-content;
 	height: max-content;
-	border-radius: 1rem;
-	overflow: hidden;
 	border-collapse: separate;
+}
+
+.spreadsheet--dark {
+	--primary-100: #000000;
+	--primary-200: #101010;
+	--primary-300: #202020;
+	--secondary-100: #ffffff;
+	--secondary-200: #efefef;
+	--secondary-300: #dfdfdf;
 }
 
 .spreadsheet__cell {
 	height: 2.5rem;
 	width: 6rem;
 	padding: 0;
-	border-radius: 0.1rem;
+	border-radius: 0.25rem;
 	overflow: hidden;
 }
 
 .spreadsheet__cell-header {
-	background-color: #dfdfdf;
-	color: #202020;
+	background-color: var(--primary-300);
+	color: var(--secondary-300);
 	font-weight: bold;
 	text-align: center;
 	font-size: 1.1rem;
 }
 
 .spreadsheet__cell-input {
-	background-color: #efefef;
+	background-color: var(--primary-200);
+	color: var(--secondary-100);
 	width: 100%;
 	height: 100%;
 	padding: 0.25rem;
@@ -36,11 +51,15 @@
 	overflow: visible;
 }
 
+.spreadsheet__cell-input:hover {
+	background-color: var(--primary-300);
+}
+
 .spreadsheet__cell:has(.spreadsheet__cell-input:focus) {
-	outline: 0.1rem solid #000000;
+	outline: 0.1rem solid var(--secondary-100);
 }
 
 .spreadsheet__cell-input:disabled {
-	background-color: #dfdfdf;
-	color: #404040;
+	background-color: var(--primary-300);
+	color: var(--secondary-300);
 }

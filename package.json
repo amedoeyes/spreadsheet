@@ -6,8 +6,11 @@
 		"react",
 		"spreadsheet"
 	],
-	"version": "1.0.1",
+	"version": "1.1.0",
 	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/amedoeyes/spreadsheet.git"
@@ -26,9 +29,9 @@
 		"lint": "eslint ."
 	},
 	"dependencies": {
+		"immer": "^10.0.1",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"vite-plugin-css-injected-by-js": "^3.1.0"
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.27",
@@ -40,9 +43,7 @@
 		"eslint-plugin-react": "^7.32.2",
 		"typescript": "^4.9.3",
 		"vite": "^4.1.0",
+		"vite-plugin-css-injected-by-js": "^3.1.0",
 		"vite-plugin-dts": "^2.3.0"
-	},
-	"publishConfig": {
-		"access": "public"
 	}
 }

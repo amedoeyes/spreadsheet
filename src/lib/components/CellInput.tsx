@@ -1,3 +1,4 @@
+import { memo, useState } from "react";
 import { Cell } from "../index";
 
 type CellInputProps = {
@@ -6,11 +7,14 @@ type CellInputProps = {
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function CellInput({
-	cell,
-	tabIndex,
-	onChange,
-}: CellInputProps) {
+function CellInput({ cell, tabIndex, onChange }: CellInputProps) {
+	const [value, setValue] = useState(cell.value);
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setValue(e.target.value);
+		onChange(e);
+	};
+
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
 			const currentElement = e.target as HTMLInputElement;
@@ -31,12 +35,17 @@ export default function CellInput({
 				className="spreadsheet__cell-input"
 				type="text"
 				tabIndex={tabIndex}
-				value={cell.value}
 				inputMode={cell.inputMode}
-				onChange={onChange}
-				onKeyDown={handleKeyDown}
 				disabled={cell.locked}
+				value={value}
+				onChange={handleChange}
+				onKeyDown={handleKeyDown}
 			/>
 		</td>
 	);
 }
+
+export default memo(
+	CellInput,
+	(prevProps, nextProps) => prevProps.cell === nextProps.cell
+);
