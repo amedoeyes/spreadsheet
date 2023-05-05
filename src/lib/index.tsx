@@ -2,8 +2,8 @@ import RowHeader from "./components/RowHeader";
 import ColHeader from "./components/ColHeader";
 import "./index.css";
 import CellInput from "./components/CellInput";
-import { produce } from "immer";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useImmer } from "use-immer";
 
 export type Cell = {
 	value: number | string;
@@ -37,18 +37,19 @@ export default function Spreadsheet({
 	darkMode = false,
 }: SpreadsheetProps) {
 	let tabIndex = 1;
-	const [localCells, setLocalCells] = useState<Cells>(cells);
+	const [localCells, setLocalCells] = useImmer<Cells>(cells);
 
 	const handleChange = (rowIndex: number, colIndex: number) => {
 		return (e: React.ChangeEvent<HTMLInputElement>) => {
-			const updatedCells = produce(localCells, (draft) => {
+			setLocalCells((draft) => {
 				draft[rowIndex][colIndex].value = e.target.value;
 			});
-
-			setLocalCells(updatedCells);
-			if (onChange) onChange(updatedCells);
 		};
 	};
+
+	useEffect(() => {
+		onChange && onChange(localCells);
+	}, [localCells]);
 
 	return (
 		<table
