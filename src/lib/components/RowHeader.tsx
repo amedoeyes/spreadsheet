@@ -12,7 +12,7 @@ function getRowHeader(index: number): string {
 	index++;
 	while (index > 0) {
 		header = alphabet[(index - 1) % 26] + header;
-		index = (index / 26) | 0;
+		index = ((index - 1) / 26) | 0;
 	}
 	return header;
 }

@@ -47,9 +47,8 @@ export default function Spreadsheet({
 		};
 	};
 
-	useEffect(() => {
-		onChange && onChange(localCells);
-	}, [localCells]);
+	useEffect(() => setLocalCells(cells), [cells]);
+	useEffect(() => onChange && onChange(localCells), [localCells]);
 
 	return (
 		<table
