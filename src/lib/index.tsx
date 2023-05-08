@@ -2,8 +2,9 @@ import RowHeader from "./components/RowHeader";
 import ColHeader from "./components/ColHeader";
 import "./index.css";
 import CellInput from "./components/CellInput";
-import { useEffect } from "react";
-import { useImmer } from "use-immer";
+import { useEffect, useState } from "react";
+import cloneDeep from "lodash.clonedeep";
+import isEqual from "lodash.isequal";
 
 export type Cell = {
 	value: number | string;
@@ -37,23 +38,21 @@ export default function Spreadsheet({
 	darkMode = false,
 }: SpreadsheetProps) {
 	let tabIndex = 1;
-	const [localCells, setLocalCells] = useImmer<Cells>(cells);
+	const [localCells, setLocalCells] = useState<Cells>(cells);
 
 	const handleChange = (rowIndex: number, colIndex: number) => {
 		return (e: React.ChangeEvent<HTMLInputElement>) => {
-			setLocalCells((draft) => {
-				draft[rowIndex][colIndex].value = e.target.value;
-			});
+			const updatedCells = cloneDeep(localCells);
+			updatedCells[rowIndex][colIndex].value = e.target.value;
+
+			setLocalCells(updatedCells);
+			onChange && onChange(updatedCells);
 		};
 	};
 
 	useEffect(() => {
-		setLocalCells(cells);
+		!isEqual(cells, localCells) && setLocalCells(cells);
 	}, [cells]);
-
-	useEffect(() => {
-		if (onChange) onChange(localCells);
-	}, [localCells]);
 
 	return (
 		<table
